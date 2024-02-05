@@ -22,7 +22,7 @@ SERVER_CONFIG="server {
     }
 
     if (\$request_filename ~ redirect_me) {
-        rewrite ^ https://sketchfab.com/bluepeno/models permanent;
+        rewrite ^ https://github.com/Pronothurah permanent;
     }
 
     location = /404.html {
