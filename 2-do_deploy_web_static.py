@@ -50,7 +50,7 @@ def do_deploy(archive_path):
         run(source + " " + dest)
         run("sudo rm /tmp/{0}".format(path))
         source = (
-            "sudo mv /data/web_static/releases/{0}/web_static/*".format(name)
+            "sudo mv -fT /data/web_static/releases/{0}/web_static/*".format(name)
         )
         dest = "/data/web_static/releases/{0}/".format(name)
         run(source + " " + dest)
