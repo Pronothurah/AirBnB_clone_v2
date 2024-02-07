@@ -66,8 +66,19 @@ def do_deploy(archive_path):
         # Create new symbolic link
         run(f"ln -s {folder_path} /data/web_static/current")
 
-        print('New version deployed!')
-        return True
+        current_index_html = "/data/web_static/current/0-index.html"
+        current_my_index_html = "/data/web_static/current/my_index.html"
+
+        index_exists_cmd = f"test -f {current_index_html} && echo 'Exists'"
+        my_ix_exists_cmd = f"test -f {current_my_index_html} && echo 'Exists'"
+
+        if run(index_exists_cmd).stdout.strip() == "Exists" and \
+           run(my_ix_exists_cmd).stdout.strip() == "Exists":
+            print('New version deployed!')
+            return True
+        else:
+            return False
+
     except Exception as e:
         print(f"Failed to deploy: {e}")
         return False
