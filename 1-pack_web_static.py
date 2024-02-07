@@ -18,7 +18,7 @@ def do_pack():
         local(f'sudo tar -cvzf versions/web_static_{t_string}.tgz web_static')
         f_path = f"versions/web_static_{t_string}.tgz"
         f_size = getsize(f_path)
-        print(f_size)
+        print(f"web_static packed: {f_path} -> {f_size}Bytes")
         # return file
     except FileNotFoundError:
         print("Error: Unable to find specified directory.")
