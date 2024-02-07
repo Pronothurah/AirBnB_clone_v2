@@ -14,21 +14,16 @@ env.hosts = ["52.86.50.144", "52.3.250.50"]
 def do_pack():
     """Compress files from web_static directory"""
     try:
-        if not os.path.isdir("versions"):
-            os.makedirs("versions")
+        local('sudo mkdir -p versions')
         date = datetime.now()
-        file = "versions/web_static_{0}{1}{2}{3}{4}{5}".format(
-            date.year,
-            date.month,
-            date.day,
-            date.hour,
-            date.minute,
-            date.second
-        )
-        file += ".tgz"
-        local("tar -cvzf {} web_static".format(file))
-        return file
-    except Exception:
+        t_string = date.strftime('%Y%m%d%H%M%S')
+        local(f'sudo tar -cvzf versions/web_static_{t_string}.tgz web_static')
+        f_path = f"versions/web_static_{t_string}.tgz"
+        f_size = os.path.getsize(f_path)
+        print(f"web_static packed: {f_path} -> {f_size}Bytes")
+        return f_path
+    except FileNotFoundError:
+        print("Error: Unable to find specified directory.")
         return None
 
 
