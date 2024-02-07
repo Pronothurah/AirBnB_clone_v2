@@ -41,21 +41,33 @@ def do_deploy(archive_path):
     """
     if not os.path.exists(archive_path):
         return False
-    file_name = os.path.basename(archive_path)
-    folder_name = file_name.replace(".tgz", "")
-    folder_path = "/data/web_static/releases/{}/".format(folder_name)
-    success = False
+
     try:
-        put(archive_path, "/tmp/{}".format(file_name))
-        run("mkdir -p {}".format(folder_path))
-        run("tar -xzf /tmp/{} -C {}".format(file_name, folder_path))
-        run("rm -rf /tmp/{}".format(file_name))
-        run("mv {}web_static/* {}".format(folder_path, folder_path))
-        run("rm -rf {}web_static".format(folder_path))
+        # Upload archive to /tmp directory on remote server
+        put(archive_path, "/tmp")
+
+        folder_name = os.path.basename(archive_path).split('.')[0]
+        folder_path = f"/data/web_static/releases/{folder_name}"
+        run(f"mkdir -p {folder_path}")
+        run(f"tar -xzf /tmp/{os.path.basename(archive_path)} -C {folder_path}")
+
+        # Remove archive from /tmp directory
+        run(f"rm /tmp/{os.path.basename(archive_path)}")
+
+        # Move contents of extracted folder to current release directory
+        run(f"mv {folder_path}/web_static/* {folder_path}/")
+
+        # Remove empty web_static directory
+        run(f"rm -rf {folder_path}/web_static")
+
+        # Remove current symbolic link
         run("rm -rf /data/web_static/current")
-        run("ln -s {} /data/web_static/current".format(folder_path))
+
+        # Create new symbolic link
+        run(f"ln -s {folder_path} /data/web_static/current")
+
         print('New version deployed!')
-        success = True
-    except Exception:
-        success = False
-    return success
+        return True
+    except Exception as e:
+        print(f"Failed to deploy: {e}")
+        return False
