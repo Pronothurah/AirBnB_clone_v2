@@ -12,20 +12,11 @@ from fabric.api import *
 def do_pack():
     """Compress files from web_static directory"""
     try:
-        if not os.path.isdir("versions"):
-            os.makedirs("versions")
+        local('sudo mkdir -p versions')
         date = datetime.now()
-        file = "versions/web_static_{0}{1}{2}{3}{4}{5}".format(
-            date.year,
-            date.month,
-            date.day,
-            date.hour,
-            date.minute,
-            date.second
-        )
-        file += ".tgz"
-        local("tar -cvzf {} web_static".format(file))
-        return file
+        t_string = date.strftime('%Y%m%d%H%M%S')
+        local(f'sudo tar -cvzf versions/web_static_{t_string}.tgz web_static')
+        # return file
     except FileNotFoundError:
         print("Error: Unable to find specified directory.")
         return None
