@@ -6,7 +6,7 @@ using the function do_pack
 """
 import os
 from datetime import datetime
-from fabric.api import local
+from fabric.api import *
 
 
 def do_pack():
