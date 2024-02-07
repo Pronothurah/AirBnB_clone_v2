@@ -42,8 +42,13 @@ def do_deploy(archive_path):
     try:
         if not os.path.isfile(archive_path):
             return False
-        path = archive_path.split("/")[1]
-        name = path.split(".")[0]
+        
+        # Extract filename from the full path
+        path = os.path.basename(archive_path)
+        name = os.path.splitext(path)[0]
+
+        # path = archive_path.split("/")[1]
+        # name = path.split(".")[0]
         put(archive_path, "/tmp/{0}".format(path))
         run("sudo mkdir -p /data/web_static/releases/{}/".format(name))
         source = "sudo tar -xzf /tmp/{0} -C".format(path)
