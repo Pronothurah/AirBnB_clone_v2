@@ -19,7 +19,7 @@ def do_pack():
         f_path = f"versions/web_static_{t_string}.tgz"
         f_size = getsize(f_path)
         print(f"web_static packed: {f_path} -> {f_size}Bytes")
-        # return file
+        return f_path
     except FileNotFoundError:
         print("Error: Unable to find specified directory.")
         return None
