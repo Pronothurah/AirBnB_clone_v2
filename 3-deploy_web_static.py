@@ -60,6 +60,7 @@ def do_deploy(archive_path):
         success = False
     return success
 
+
 def deploy():
     """
     Full deployment based on do_pack & do_deploy (task 2)
