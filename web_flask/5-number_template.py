@@ -11,37 +11,39 @@ app.url_map.strict_slashes = False
 
 @app.route('/')
 def hello_hbnb():
+    """Base route"""
     return 'Hello HBNB!'
 
 
 @app.route('/hbnb')
 def hbnb():
+    """hbnb route"""
     return 'HBNB'
 
 
 @app.route('/c/<text>')
 def ctext(text):
+    """Display text (C + @text)"""
     return f'C {text.replace("_", " ")}'
 
 
 @app.route('/python/')
 @app.route('/python/<text>')
 def pythontext(text='is_cool'):
+    """Display text (Python + @text)"""
     return f'Python {text.replace("_", " ")}'
 
 
 @app.route('/number/<int:n>')
 def number(n):
+    """Display text (@n + is a number)"""
     return f'{n} is a number'
 
 
 @app.route('/number_template/<int:n>')
 def number_template(n):
-    '''The number_template page.'''
-    ctxt = {
-        'n': n
-    }
-    return render_template('5-number.html', **ctxt)
+    """Display content from html files for the route"""
+    return render_template('5-number.html', n=n)
 
 
 if __name__ == '__main__':
