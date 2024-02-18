@@ -19,10 +19,13 @@ def teardown(exception):
 
 @app.route('/states_list')
 def states_list():
-    """Display a HTML page with a list of states"""
-    states = storage.all(State).values()
-    states = sorted(states, key=lambda x: x.name)
-    return render_template('7-states_list.html', states=states)
+    '''The states_list page.'''
+    all_states = list(storage.all(State).values())
+    all_states.sort(key=lambda x: x.name)
+    ctxt = {
+        'states': all_states
+    }
+    return render_template('7-states_list.html', **ctxt)
 
 
 if __name__ == '__main__':
