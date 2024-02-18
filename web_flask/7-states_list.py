@@ -1,32 +1,28 @@
 #!/usr/bin/python3
 """
-Script that starts a Flask web application
+This module is about listing states from db
 """
-
-from flask import Flask, render_template
 from models import storage
-from models.state import State
+from flask import Flask
+from flask import render_template
 
 app = Flask(__name__)
+"""Flask Apllication instance"""
 app.url_map.strict_slashes = False
 
 
+@app.route("/states_list")
+def states_list():
+    """Display content from html files for the route"""
+    all_states = storage.all(cls="State")
+    return render_template("7-states_list.html", states=all_states)
+
+
 @app.teardown_appcontext
-def teardown(exception):
-    """Closes the current SQLAlchemy session"""
+def close_storage(exception):
+    """Close sqlalchemy session after each request"""
     storage.close()
 
 
-@app.route('/states_list')
-def states_list():
-    '''The states_list page.'''
-    all_states = list(storage.all(State).values())
-    all_states.sort(key=lambda x: x.name)
-    ctxt = {
-        'states': all_states
-    }
-    return render_template('7-states_list.html', **ctxt)
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
