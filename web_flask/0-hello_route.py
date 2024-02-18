@@ -5,9 +5,10 @@
 from flask import Flask
 
 app = Flask(__name__)
+"""Flask Apllication instance"""
+app.url_map.strict_slashes = False
 
-
-@app.route('/', strict_slashes=False)
+@app.route('/')
 def hello_hbnb():
     return 'Hello HBNB!'
 
