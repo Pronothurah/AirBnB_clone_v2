@@ -15,7 +15,8 @@ app.url_map.strict_slashes = False
 def states_list():
     """Display content from html files for the route"""
     all_states = storage.all("State")
-    return render_template("7-states_list.html", states=all_states)
+    states_dict = {state.id: state for state in all_states.values()}
+    return render_template("7-states_list.html", states=states_dict)
 
 
 @app.teardown_appcontext
