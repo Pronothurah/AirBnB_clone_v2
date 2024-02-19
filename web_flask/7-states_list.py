@@ -11,12 +11,11 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 
 
-@app.route("/states_list")
+@app.route('/states_list')
 def states_list():
-    """Display content from html files for the route"""
-    all_states = storage.all("State")
-    states_dict = {state.id: state for state in all_states.values()}
-    return render_template("7-states_list.html", states=states_dict)
+    """display a HTML page with the states listed in alphabetical order"""
+    states = sorted(list(storage.all("State").values()), key=lambda x: x.name)
+    return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext
